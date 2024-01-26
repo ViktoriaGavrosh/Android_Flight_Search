@@ -1,6 +1,7 @@
 package com.viktoriagavrosh.flightsearch
 
 import androidx.lifecycle.ViewModel
+import com.viktoriagavrosh.flightsearch.temporary.Datasource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,11 +19,21 @@ class FlightViewModel : ViewModel() {
             )
         }
     }
+
+    fun updateAirport(code: String) {
+        val newAirport = Datasource.getAirport(code)
+        _uiState.update {
+            it.copy(
+                airport = newAirport
+            )
+        }
+    }
+
 }
 
 data class FlightUiState(
     val inputText: String = "",
-    val airport: Airport = Airport("AAF", "Apalachicola Regional Airport")
+    val airport: Airport = Datasource.listAirports[0]
 )
 
 data class Airport(
