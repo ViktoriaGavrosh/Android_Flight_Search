@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.flightsearch
+package com.viktoriagavrosh.flightsearch.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.viktoriagavrosh.flightsearch.FlightSearchApplication
 import com.viktoriagavrosh.flightsearch.data.Airport
 import com.viktoriagavrosh.flightsearch.data.FlightDao
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,6 +72,7 @@ class FlightViewModel(
 
 data class FlightUiState(
     val inputText: String = "",
-    val airport: Airport = Airport(1, "", "", 1)
+    val airport: Airport = Airport(1, "", "", 1),
+    val isSearch: Boolean = true
 )
 
