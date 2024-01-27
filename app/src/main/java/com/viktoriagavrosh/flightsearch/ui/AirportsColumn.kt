@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.flightsearch.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -11,7 +12,8 @@ import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 @Composable
 fun AirportsColumn(
     modifier: Modifier = Modifier,
-    airports: List<Airport>
+    airports: List<Airport>,
+    onAirportClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -20,7 +22,11 @@ fun AirportsColumn(
             items = airports
         ) {
             AirportRow(
-                airport = it
+                airport = it,
+                modifier = Modifier
+                    .clickable {
+                        onAirportClick(it.code)
+                    }
             )
         }
     }
@@ -34,7 +40,8 @@ fun AirportsColumnPreview() {
     }
     FlightSearchTheme {
         AirportsColumn(
-            airports = mockAirports
+            airports = mockAirports,
+            onAirportClick = {}
         )
     }
 }

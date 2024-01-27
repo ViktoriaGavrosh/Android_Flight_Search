@@ -11,7 +11,8 @@ interface FlightDao {
     @Insert
     suspend fun insertAirport(airport: Airport)
 
-    @Query("SELECT * FROM airport WHERE iata_code LIKE '%' || :code || '%'")
+    @Query("SELECT * FROM airport WHERE iata_code LIKE '%' || :code || '%' " +
+            "OR name LIKE '%' || :code || '%'")
     fun getAirport(code: String): Flow<List<Airport>>
 
     @Query("SELECT * FROM airport WHERE id = :id")

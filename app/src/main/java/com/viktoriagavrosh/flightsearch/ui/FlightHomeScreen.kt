@@ -21,7 +21,7 @@ fun FlightHomeScreen(
     modifier: Modifier = Modifier,
     uiState: FlightUiState,
     onTextChange: (String) -> Unit,
-    onUpdateAirport: (String) -> Unit,
+    onAirportClick: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -30,20 +30,21 @@ fun FlightHomeScreen(
     ) {
         TextField(
             value = uiState.inputText,
-            onValueChange = onTextChange,
-            keyboardOptions = KeyboardOptions.Default.copy(
+            onValueChange = onTextChange
+            /*keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions {
                 onUpdateAirport(uiState.inputText)
-            }
+            }*/
         )
         if (uiState.isSearch) {
             AirportsColumn(
                 airports = uiState.listAirports,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = dimensionResource(id = R.dimen.padding_medium))
+                    .padding(top = dimensionResource(id = R.dimen.padding_medium)),
+                onAirportClick = onAirportClick
             )
         } else {
             RoutesColumn(
@@ -64,7 +65,7 @@ fun FlightHomeScreenPreview() {
         FlightHomeScreen(
             uiState = FlightUiState("text", mockAirport, emptyList(), false),
             onTextChange = {},
-            onUpdateAirport = {}
+            onAirportClick = {}
         )
     }
 }
