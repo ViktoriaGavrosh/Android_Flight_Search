@@ -1,16 +1,43 @@
 package com.viktoriagavrosh.flightsearch
 
 import androidx.lifecycle.ViewModel
-import com.viktoriagavrosh.flightsearch.temporary.Datasource
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.viktoriagavrosh.flightsearch.data.Airport
+import com.viktoriagavrosh.flightsearch.data.FlightDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class FlightViewModel : ViewModel() {
+class FlightViewModel(
+    private val flightDao: FlightDao
+) : ViewModel() {
 
     private var _uiState = MutableStateFlow(FlightUiState())
     val uiState: StateFlow<FlightUiState> = _uiState.asStateFlow()
+
+    init {
+        initState(1)
+    }
+
+    private fun initState(id: Int) {
+        viewModelScope.launch {
+           val airport = flightDao
+                .getAirportById(id)
+                .first()
+            _uiState.update {
+                it.copy(
+                    airport = airport
+                )
+            }
+        }
+    }
 
     fun updateInputText(text: String) {
         _uiState.update {
@@ -21,11 +48,22 @@ class FlightViewModel : ViewModel() {
     }
 
     fun updateAirport(code: String) {
-        val newAirport = Datasource.getAirport(code)
-        _uiState.update {
-            it.copy(
-                airport = newAirport
-            )
+        viewModelScope.launch {
+            val newAirport = flightDao.getAirport(code).first()
+            _uiState.update {
+                it.copy(
+                    airport = newAirport
+                )
+            }
+        }
+    }
+
+    companion object {
+        val factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as FlightSearchApplication)
+                FlightViewModel(application.database.flightDao())
+            }
         }
     }
 
@@ -33,10 +71,6 @@ class FlightViewModel : ViewModel() {
 
 data class FlightUiState(
     val inputText: String = "",
-    val airport: Airport = Datasource.listAirports[0]
+    val airport: Airport = Airport(1, "", "", 1)
 )
 
-data class Airport(
-    val code: String,
-    val name: String
-)

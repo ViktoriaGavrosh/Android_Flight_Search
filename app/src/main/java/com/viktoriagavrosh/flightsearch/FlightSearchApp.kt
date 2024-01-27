@@ -25,7 +25,7 @@ import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 @Composable
 fun FlightSearchApp() {
 
-    val flightViewModel: FlightViewModel = viewModel()
+    val flightViewModel: FlightViewModel = viewModel(factory = FlightViewModel.factory)
     val uiState = flightViewModel.uiState.collectAsState()
 
     Column(
@@ -44,23 +44,25 @@ fun FlightSearchApp() {
                 flightViewModel.updateAirport(uiState.value.inputText)
             }
         )
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.padding_medium))
-        ) {
-            Row(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        if (uiState.value.airport.code != "") {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = dimensionResource(id = R.dimen.padding_medium))
             ) {
-                Text(
-                    text = uiState.value.airport.code,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = uiState.value.airport.name,
-                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_small))
-                )
+                Row(
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+                ) {
+                    Text(
+                        text = uiState.value.airport.code,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = uiState.value.airport.name,
+                        modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_small))
+                    )
+                }
             }
         }
     }
