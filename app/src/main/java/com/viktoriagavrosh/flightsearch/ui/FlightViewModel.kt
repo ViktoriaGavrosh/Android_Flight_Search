@@ -23,7 +23,7 @@ class FlightViewModel(
     private var _uiState = MutableStateFlow(FlightUiState())
     val uiState: StateFlow<FlightUiState> = _uiState.asStateFlow()
 
-    init {
+    /*init {
         initState(1)
     }
 
@@ -38,7 +38,7 @@ class FlightViewModel(
                 )
             }
         }
-    }
+    }*/
 
     fun updateInputText(text: String) {
         _uiState.update {

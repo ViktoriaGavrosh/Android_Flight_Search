@@ -20,7 +20,8 @@ fun RouteCard(
         modifier = modifier
     ) {
         AirportRow(
-            airport =airport
+            airport = airport,
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         )
     }
 }

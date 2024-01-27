@@ -19,7 +19,7 @@ fun AirportRow(
     airport: Airport
 ) {
     Row(
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier
     ) {
         Text(
             text = airport.code,
