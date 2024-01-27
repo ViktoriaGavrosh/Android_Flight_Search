@@ -40,9 +40,7 @@ fun FlightHomeScreen(
         )
         if (uiState.isSearch) {
             AirportsColumn(
-                airports = List(3) {
-                    Airport(it, "Airport", "$it", it)     //TODO
-                },
+                airports = uiState.listAirports,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = dimensionResource(id = R.dimen.padding_medium))
@@ -64,7 +62,7 @@ fun FlightHomeScreenPreview() {
     val mockAirport =  Airport(1, "Airport", "AAA", 1)
     FlightSearchTheme {
         FlightHomeScreen(
-            uiState = FlightUiState("text", mockAirport, false),
+            uiState = FlightUiState("text", mockAirport, emptyList(), false),
             onTextChange = {},
             onUpdateAirport = {}
         )

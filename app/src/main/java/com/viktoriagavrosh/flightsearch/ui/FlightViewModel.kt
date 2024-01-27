@@ -46,6 +46,18 @@ class FlightViewModel(
                 inputText = text
             )
         }
+        updateListAirports(text)
+    }
+
+    private fun updateListAirports(text: String) {
+        viewModelScope.launch {
+            val newAirport = flightDao.getAirport(text).first()
+            _uiState.update {
+                it.copy(
+                   listAirports = newAirport
+                )
+            }
+        }
     }
 
     fun updateAirport(code: String) {
@@ -53,7 +65,7 @@ class FlightViewModel(
             val newAirport = flightDao.getAirport(code).first()
             _uiState.update {
                 it.copy(
-                    airport = newAirport
+                    airport = newAirport.first()
                 )
             }
         }
@@ -73,6 +85,7 @@ class FlightViewModel(
 data class FlightUiState(
     val inputText: String = "",
     val airport: Airport = Airport(1, "", "", 1),
+    val listAirports: List<Airport> = emptyList(),
     val isSearch: Boolean = true
 )
 
