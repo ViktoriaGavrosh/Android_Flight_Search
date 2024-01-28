@@ -3,6 +3,7 @@ package com.viktoriagavrosh.flightsearch.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,8 @@ fun FlightHomeScreen(
     ) {
         TextField(
             value = uiState.inputText,
-            onValueChange = onTextChange
+            onValueChange = onTextChange,
+            shape = MaterialTheme.shapes.medium
 
         )
         if (uiState.isSearch) {

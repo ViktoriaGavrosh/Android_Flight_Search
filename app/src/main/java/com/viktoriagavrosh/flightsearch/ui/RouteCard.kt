@@ -3,6 +3,7 @@ package com.viktoriagavrosh.flightsearch.ui
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -17,7 +18,8 @@ fun RouteCard(
     airport: Airport
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        shape = MaterialTheme.shapes.small       // TODO size
     ) {
         AirportRow(
             airport = airport,
