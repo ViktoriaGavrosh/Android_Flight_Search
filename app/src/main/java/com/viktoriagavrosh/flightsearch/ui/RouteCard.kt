@@ -19,7 +19,7 @@ fun RouteCard(
 ) {
     Card(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small       // TODO size
+        shape = MaterialTheme.shapes.small
     ) {
         AirportRow(
             airport = airport,
