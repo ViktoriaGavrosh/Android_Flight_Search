@@ -1,5 +1,12 @@
 package com.viktoriagavrosh.flightsearch.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +20,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
 import com.viktoriagavrosh.flightsearch.data.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
+import java.util.Locale
 
 @Composable
 fun FlightHomeScreen(
@@ -28,11 +37,26 @@ fun FlightHomeScreen(
     onTextChange: (String) -> Unit,
     onAirportClick: (String) -> Unit,
 ) {
+
+    val resultLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val results = result.data?.getStringArrayListExtra(
+                RecognizerIntent.EXTRA_RESULTS
+            ) as ArrayList<String>
+
+            onTextChange(results[0])
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_medium)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val context = LocalContext.current
+
         TextField(
             value = uiState.inputText,
             onValueChange = onTextChange,
@@ -46,7 +70,24 @@ fun FlightHomeScreen(
             },
             trailingIcon = {
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        if (!SpeechRecognizer.isRecognitionAvailable(context)) {
+                            Toast.makeText(context, "Speech not Available", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+
+                            intent.putExtra(
+                                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
+                            )
+                            intent.putExtra(
+                                RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault()
+                            )
+                            intent.putExtra(
+                                RecognizerIntent.EXTRA_PROMPT, "Speak Something"
+                            )
+                            resultLauncher.launch(intent)
+                        }
+                    }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_mic),
@@ -78,6 +119,7 @@ fun FlightHomeScreen(
             )
         }
     }
+
 }
 
 @Preview

@@ -48,6 +48,7 @@ class FlightViewModel(
             )
         }
         updateListAirports(text)
+
     }
 
     private fun updateListAirports(text: String) {
