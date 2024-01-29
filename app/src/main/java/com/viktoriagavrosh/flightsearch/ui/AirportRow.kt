@@ -24,11 +24,12 @@ fun AirportRow(
         Text(
             text = airport.code,
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.bodySmall
         )
         Text(
             text = airport.name,
-            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_small))
+            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_small)),
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }

@@ -44,7 +44,8 @@ private fun FlightTopAppBar() {
     TopAppBar(
         title = {
             Text(
-                text = stringResource(id = R.string.flight_search)
+                text = stringResource(id = R.string.flight_search),
+                style = MaterialTheme.typography.titleLarge
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(

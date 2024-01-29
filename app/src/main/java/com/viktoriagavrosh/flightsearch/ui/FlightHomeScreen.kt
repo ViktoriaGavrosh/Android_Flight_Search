@@ -61,6 +61,7 @@ fun FlightHomeScreen(
             value = uiState.inputText,
             onValueChange = onTextChange,
             modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.bodyMedium,
             singleLine = true,
             leadingIcon = {
                 Icon(
