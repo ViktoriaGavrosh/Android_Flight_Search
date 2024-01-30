@@ -3,7 +3,7 @@
     <string name="depart">DEPART</string>
     <string name="arrive">ARRIVE</string>
     <string name="search">search</string>
-    <string name="flight_from">Flight from %1$s</string>
+    <string name="flight_from">Flights from %1$s</string>
     <string name="flight_search">Flight Search</string>
     <string name="search_icon">Search icon</string>
     <string name="microphone">Microphone</string>
