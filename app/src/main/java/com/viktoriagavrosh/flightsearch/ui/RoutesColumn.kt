@@ -31,7 +31,7 @@ fun RoutesColumn(
             modifier = Modifier
                 .padding(vertical = dimensionResource(id = R.dimen.padding_extra_medium))
         )
-        LazyColumn() {
+        LazyColumn {
             item(
                 content = {
                     RouteCard(
