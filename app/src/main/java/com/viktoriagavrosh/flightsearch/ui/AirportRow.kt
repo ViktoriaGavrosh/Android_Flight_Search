@@ -10,7 +10,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
-import com.viktoriagavrosh.flightsearch.data.Airport
+import com.viktoriagavrosh.flightsearch.model.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable

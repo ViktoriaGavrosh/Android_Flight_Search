@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.flightsearch.FlightSearchApplication
-import com.viktoriagavrosh.flightsearch.data.Airport
+import com.viktoriagavrosh.flightsearch.model.Airport
 import com.viktoriagavrosh.flightsearch.data.FlightDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
