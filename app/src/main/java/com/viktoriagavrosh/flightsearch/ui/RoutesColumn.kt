@@ -34,9 +34,7 @@ fun RoutesColumn(
             modifier = Modifier
                 .padding(vertical = dimensionResource(id = R.dimen.padding_extra_medium))
         )
-        LazyColumn(
-            //verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)
-        ) {
+        LazyColumn {
             items(
                 items = listRoutes
             ) { item ->
@@ -44,6 +42,7 @@ fun RoutesColumn(
                     route = item,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(bottom = dimensionResource(id = R.dimen.padding_small))
                 )
             }
         }
