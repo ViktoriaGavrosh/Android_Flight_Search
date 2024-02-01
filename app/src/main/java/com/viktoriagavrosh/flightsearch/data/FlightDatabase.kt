@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 
 @Database(
     entities = [Airport::class],

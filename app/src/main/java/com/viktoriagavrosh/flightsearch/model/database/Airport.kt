@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.flightsearch.model
+package com.viktoriagavrosh.flightsearch.model.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 import java.util.Locale
 
@@ -113,7 +113,8 @@ fun FlightHomeScreen(
             )
         } else {
             RoutesColumn(
-                airport = uiState.airport,
+                airport = uiState.selectedAirport,
+                listRoutes = uiState.listRoutes,
                 modifier = Modifier
                     .fillMaxWidth()
             )

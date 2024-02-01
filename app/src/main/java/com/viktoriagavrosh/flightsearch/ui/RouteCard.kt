@@ -12,13 +12,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.Route
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
 fun RouteCard(
     modifier: Modifier = Modifier,
-    airport: Airport
+    route: Route
 ) {
     Card(
         modifier = modifier,
@@ -28,11 +29,11 @@ fun RouteCard(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
         ) {
             RouteDestination(
-                airport = airport, 
+                airport = route.departureAirport,
                 titleDestination = stringResource(id = R.string.depart)
             )
             RouteDestination(
-                airport = airport,
+                airport = route.arrivalAirport,
                 titleDestination = stringResource(id = R.string.arrive),
                 modifier = Modifier
                     .padding(top = dimensionResource(id = R.dimen.padding_medium))
@@ -66,9 +67,10 @@ private fun RouteDestination(
 @Composable
 fun RouteCardPreview() {
     val mockAirport = Airport(1, "Airport", "AAA", 1)
+    val mockRoute = Route(mockAirport, mockAirport)
     FlightSearchTheme {
         RouteCard(
-            airport = mockAirport,
+            route = mockRoute,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = dimensionResource(id = R.dimen.padding_medium))

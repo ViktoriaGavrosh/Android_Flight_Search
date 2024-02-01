@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,13 +14,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.Route
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
 fun RoutesColumn(
     modifier: Modifier = Modifier,
-    airport: Airport
+    airport: Airport,
+    listRoutes: List<Route>
 ) {
     Column(
         modifier = modifier
@@ -31,16 +34,18 @@ fun RoutesColumn(
             modifier = Modifier
                 .padding(vertical = dimensionResource(id = R.dimen.padding_extra_medium))
         )
-        LazyColumn {
-            item(
-                content = {
-                    RouteCard(
-                        airport = airport,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-            )
+        LazyColumn(
+            //verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)
+        ) {
+            items(
+                items = listRoutes
+            ) { item ->
+                RouteCard(
+                    route = item,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
@@ -49,7 +54,13 @@ fun RoutesColumn(
 @Composable
 fun RouteColumnPreview() {
     val mockAirport = Airport(1, "Airport", "AAA", 1)
+    val mockRoute = Route(mockAirport, mockAirport)
     FlightSearchTheme {
-        RoutesColumn(airport = mockAirport)
+        RoutesColumn(
+            airport = mockAirport,
+            listRoutes = List(3) {
+                mockRoute
+            }
+        )
     }
 }

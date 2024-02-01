@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable

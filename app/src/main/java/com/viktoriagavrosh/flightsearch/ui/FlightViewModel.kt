@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.flightsearch.ui
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -8,7 +9,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.flightsearch.FlightSearchApplication
 import com.viktoriagavrosh.flightsearch.data.FlightRepository
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.Route
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,24 +53,39 @@ class FlightViewModel(
 
     }
 
-    private fun updateListAirports(text: String) {
-        viewModelScope.launch {
-            val newAirport = flightRepository.getAirportsStreamByCondition(text).first()
-            _uiState.update {
-                it.copy(
-                   listAirports = newAirport
-                )
-            }
-        }
-    }
-
     fun updateAirport(code: String) {
         viewModelScope.launch {
             val newAirport = flightRepository.getAirportsStreamByCondition(code).first()
             _uiState.update {
                 it.copy(
-                    airport = newAirport.first(),
+                    selectedAirport = newAirport.first(),
                     isSearch = false
+                )
+            }
+        }
+    }
+
+    fun updateListRoutes(code: String) {
+        viewModelScope.launch {
+            val newAirport = flightRepository.getAirportsStreamByCondition(code).first()
+                .first()
+            val listRoutes = flightRepository.getListRoutes(newAirport)
+            _uiState.update {
+                it.copy(
+                    selectedAirport = newAirport,
+                    listRoutes = listRoutes,
+                    isSearch = false
+                )
+            }
+        }
+    }
+
+    private fun updateListAirports(text: String) {
+        viewModelScope.launch {
+            val listAirports = flightRepository.getAirportsStreamByCondition(text)
+            _uiState.update {
+                it.copy(
+                    listAirports = listAirports.first()
                 )
             }
         }
@@ -87,8 +104,9 @@ class FlightViewModel(
 
 data class FlightUiState(
     val inputText: String = "",
-    val airport: Airport = Airport(1, "", "", 1),
+    val selectedAirport: Airport = Airport(1, "", "", 1),
     val listAirports: List<Airport> = emptyList(),
+    val listRoutes: List<Route> = emptyList(),
     val isSearch: Boolean = true
 )
 

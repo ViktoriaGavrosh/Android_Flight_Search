@@ -1,6 +1,6 @@
 package com.viktoriagavrosh.flightsearch.domain
 
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.model.Route
 
 

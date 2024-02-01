@@ -1,7 +1,7 @@
 package com.viktoriagavrosh.flightsearch.data
 
 import com.viktoriagavrosh.flightsearch.domain.RoutesConverter
-import com.viktoriagavrosh.flightsearch.model.Airport
+import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.model.Route
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
