@@ -14,10 +14,11 @@ interface FlightDao {
 
     @Query("SELECT * FROM airport WHERE iata_code LIKE '%' || :code || '%' " +
             "OR name LIKE '%' || :code || '%'")
-    fun getAirport(code: String): Flow<List<Airport>>
+    fun getAirportsByCondition(code: String): Flow<List<Airport>>
 
     @Query("SELECT * FROM airport WHERE id = :id")
     fun getAirportById(id: Int): Flow<Airport>
+
 
     @Query("SELECT * FROM airport")
     fun getAllAirports(): Flow<List<Airport>>

@@ -10,7 +10,7 @@ interface Converter {
         airports: List<Airport>
     ): List<Route>
 }
-class RoutesConverter : Converter {
+object RoutesConverter : Converter {
     override fun convertToListRoutes(
         departureAirport: Airport,
         airports: List<Airport>

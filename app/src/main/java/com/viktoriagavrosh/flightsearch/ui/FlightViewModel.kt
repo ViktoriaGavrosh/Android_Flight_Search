@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.flightsearch.FlightSearchApplication
+import com.viktoriagavrosh.flightsearch.data.FlightRepository
 import com.viktoriagavrosh.flightsearch.model.Airport
-import com.viktoriagavrosh.flightsearch.data.FlightDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FlightViewModel(
-    private val flightDao: FlightDao
+    private val flightRepository: FlightRepository
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow(FlightUiState())
@@ -53,7 +53,7 @@ class FlightViewModel(
 
     private fun updateListAirports(text: String) {
         viewModelScope.launch {
-            val newAirport = flightDao.getAirport(text).first()
+            val newAirport = flightRepository.getAirportsStreamByCondition(text).first()
             _uiState.update {
                 it.copy(
                    listAirports = newAirport
@@ -64,7 +64,7 @@ class FlightViewModel(
 
     fun updateAirport(code: String) {
         viewModelScope.launch {
-            val newAirport = flightDao.getAirport(code).first()
+            val newAirport = flightRepository.getAirportsStreamByCondition(code).first()
             _uiState.update {
                 it.copy(
                     airport = newAirport.first(),
@@ -78,7 +78,7 @@ class FlightViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as FlightSearchApplication)
-                FlightViewModel(application.database.flightDao())
+                FlightViewModel(application.container.flightRepository)
             }
         }
     }

@@ -1,10 +1,16 @@
 package com.viktoriagavrosh.flightsearch
 
 import android.app.Application
-import com.viktoriagavrosh.flightsearch.data.FlightDatabase
+import com.viktoriagavrosh.flightsearch.data.AppContainer
+import com.viktoriagavrosh.flightsearch.data.AppDataContainer
 
 class FlightSearchApplication : Application() {
-    val database: FlightDatabase by lazy {
-        FlightDatabase.getDatabase(this)
+
+    lateinit var container: AppContainer
+
+    override fun onCreate() {
+        super.onCreate()
+        container = AppDataContainer(this)
     }
+
 }
