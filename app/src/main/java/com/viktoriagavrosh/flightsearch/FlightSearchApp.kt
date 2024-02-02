@@ -32,7 +32,7 @@ fun FlightSearchApp() {
                 .fillMaxSize()
                 .padding(it),
             uiState = uiState.value,
-            onTextChange = { text ->flightViewModel.updateInputText(text) },
+            onTextChange = { text ->flightViewModel.updateInputTextForSearch(text) },
             onAirportClick = { code -> flightViewModel.updateListRoutes(code) }
         )
     }

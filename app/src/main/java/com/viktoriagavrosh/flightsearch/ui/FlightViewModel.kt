@@ -42,15 +42,9 @@ class FlightViewModel(
         }
     }*/
 
-    fun updateInputText(text: String) {
-        _uiState.update {
-            it.copy(
-                inputText = text,
-                isSearch = true
-            )
-        }
+    fun updateInputTextForSearch(text: String) {
+        updateInputText(text)
         updateListAirports(text)
-
     }
 
     fun updateAirport(code: String) {
@@ -77,6 +71,15 @@ class FlightViewModel(
                     isSearch = false
                 )
             }
+            updateInputText(newAirport.code)
+        }
+    }
+
+    private fun updateInputText(text: String) {
+        _uiState.update {
+            it.copy(
+                inputText = text
+            )
         }
     }
 
@@ -85,7 +88,8 @@ class FlightViewModel(
             val listAirports = flightRepository.getAirportsStreamByCondition(text)
             _uiState.update {
                 it.copy(
-                    listAirports = listAirports.first()
+                    listAirports = listAirports.first(),
+                    isSearch = true
                 )
             }
         }
