@@ -128,6 +128,7 @@ fun FlightHomeScreen(
                 } else {
                     uiState.listRoutes
                 },
+                isFavorite = uiState.inputText.isEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
             )

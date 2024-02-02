@@ -22,13 +22,18 @@ import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 fun RoutesColumn(
     modifier: Modifier = Modifier,
     airport: Airport,
-    listRoutes: List<Route>
+    listRoutes: List<Route>,
+    isFavorite: Boolean
 ) {
     Column(
         modifier = modifier
     ) {
         Text(
-            text = stringResource(R.string.flight_from, airport.code),
+            text = if (isFavorite) {
+                stringResource(R.string.favorite_routes)
+            } else {
+                stringResource(R.string.flight_from, airport.code)
+            },
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier
@@ -59,7 +64,8 @@ fun RouteColumnPreview() {
             airport = mockAirport,
             listRoutes = List(3) {
                 mockRoute
-            }
+            },
+            isFavorite = false
         )
     }
 }
