@@ -24,6 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
 import com.viktoriagavrosh.flightsearch.model.database.Airport
@@ -57,9 +59,16 @@ fun FlightHomeScreen(
     ) {
         val context = LocalContext.current
 
+        val inputText = uiState.inputText
+
         TextField(
-            value = uiState.inputText,
-            onValueChange = onTextChange,
+            value = TextFieldValue(                       // move the cursor to end of the text
+                text = inputText,
+                selection = TextRange(inputText.length)
+            ) ,
+            onValueChange = {
+                onTextChange(it.text)
+            } ,
             modifier = Modifier.fillMaxWidth(),
             textStyle = MaterialTheme.typography.bodyMedium,
             singleLine = true,
