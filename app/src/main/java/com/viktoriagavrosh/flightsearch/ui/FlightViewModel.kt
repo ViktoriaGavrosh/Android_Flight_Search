@@ -44,7 +44,11 @@ class FlightViewModel(
 
     fun updateInputTextForSearch(text: String) {
         updateInputText(text)
-        updateListAirports(text)
+        if (text.isEmpty()) {
+            updateFalseSearchState()
+        } else {
+            updateListAirports(text)
+        }
     }
 
     fun updateAirport(code: String) {
@@ -72,6 +76,14 @@ class FlightViewModel(
                 )
             }
             updateInputText(newAirport.code)
+        }
+    }
+
+    private fun updateFalseSearchState() {
+        _uiState.update {
+            it.copy(
+                isSearch = false
+            )
         }
     }
 
@@ -111,6 +123,6 @@ data class FlightUiState(
     val selectedAirport: Airport = Airport(1, "", "", 1),
     val listAirports: List<Airport> = emptyList(),
     val listRoutes: List<Route> = emptyList(),
-    val isSearch: Boolean = true
+    val isSearch: Boolean = false
 )
 

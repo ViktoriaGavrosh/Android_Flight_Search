@@ -123,7 +123,11 @@ fun FlightHomeScreen(
         } else {
             RoutesColumn(
                 airport = uiState.selectedAirport,
-                listRoutes = uiState.listRoutes,
+                listRoutes = if (uiState.inputText.isEmpty()) {
+                    uiState.listRoutes                               // TODO listFavoriteRoutes
+                } else {
+                    uiState.listRoutes
+                },
                 modifier = Modifier
                     .fillMaxWidth()
             )
