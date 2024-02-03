@@ -1,6 +1,7 @@
 package com.viktoriagavrosh.flightsearch.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.viktoriagavrosh.flightsearch.model.database.Airport
@@ -26,6 +27,9 @@ interface FlightDao {
 
     @Insert
     suspend fun insertRoute(route: FavoriteRoute)
+
+    @Delete
+    suspend fun deleteRoute(route: FavoriteRoute)
 
     @Query("SELECT * FROM favorite")
     fun getAllRoutes(): Flow<List<FavoriteRoute>>
