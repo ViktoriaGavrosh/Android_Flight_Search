@@ -1,6 +1,7 @@
 package com.viktoriagavrosh.flightsearch.ui
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -43,6 +44,7 @@ class FlightViewModel(
     }*/
 
     fun updateInputTextForSearch(text: String) {
+
         updateInputText(text)
         if (text.isEmpty()) {
             updateFalseSearchState()

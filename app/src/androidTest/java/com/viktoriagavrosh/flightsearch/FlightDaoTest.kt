@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.data.FlightDao
 import com.viktoriagavrosh.flightsearch.data.FlightDatabase
+import com.viktoriagavrosh.flightsearch.model.database.FavoriteRoute
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -23,6 +24,8 @@ class FlightDaoTest {
     private lateinit var flightDatabase: FlightDatabase
     private val airport1 = Airport(1, "AAA", "A Airport", 111)
     private val airport2 = Airport(2, "BBB", "B Airport", 222)
+    private val route1 = FavoriteRoute(3, "AAA", "BBB")
+    private val route2 = FavoriteRoute(4, "CCC", "DDD")
 
     @Before
     fun createDb() {
@@ -47,4 +50,15 @@ class FlightDaoTest {
         val airport = flightDao.getAirportById(1)
         assertEquals(airport.first(), airport1)
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun daoGetAllRoutes_returnListRoutesFromDb() = runBlocking {
+        flightDao.insertRoute(route1)
+        flightDao.insertRoute(route2)
+        val expectedList = listOf(route1, route2)
+        val routes = flightDao.getAllRoutes().first()
+        assertEquals(routes, expectedList)
+    }
+
 }

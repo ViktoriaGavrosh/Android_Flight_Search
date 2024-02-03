@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -60,15 +61,14 @@ fun FlightHomeScreen(
         val context = LocalContext.current
 
         val inputText = uiState.inputText
-
         TextField(
             value = TextFieldValue(                       // move the cursor to end of the text
                 text = inputText,
                 selection = TextRange(inputText.length)
-            ) ,
+            ),
             onValueChange = {
                 onTextChange(it.text)
-            } ,
+            },
             modifier = Modifier.fillMaxWidth(),
             textStyle = MaterialTheme.typography.bodyMedium,
             singleLine = true,
@@ -82,12 +82,14 @@ fun FlightHomeScreen(
                 IconButton(
                     onClick = {
                         if (!SpeechRecognizer.isRecognitionAvailable(context)) {
-                            Toast.makeText(context, "Speech not Available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Speech not Available", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
                             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
 
                             intent.putExtra(
-                                RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
+                                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
                             )
                             intent.putExtra(
                                 RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault()

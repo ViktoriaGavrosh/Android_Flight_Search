@@ -3,7 +3,9 @@ package com.viktoriagavrosh.flightsearch.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.viktoriagavrosh.flightsearch.model.Route
 import com.viktoriagavrosh.flightsearch.model.database.Airport
+import com.viktoriagavrosh.flightsearch.model.database.FavoriteRoute
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,5 +24,11 @@ interface FlightDao {
 
     @Query("SELECT * FROM airport")
     fun getAllAirports(): Flow<List<Airport>>
+
+    @Insert
+    suspend fun insertRoute(route: FavoriteRoute)
+
+    @Query("SELECT * FROM favorite")
+    fun getAllRoutes(): Flow<List<FavoriteRoute>>
 
 }
