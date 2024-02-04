@@ -28,6 +28,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
+import com.viktoriagavrosh.flightsearch.model.Route
 import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 import java.util.Locale
@@ -38,6 +39,7 @@ fun FlightHomeScreen(
     uiState: FlightUiState,
     onTextChange: (String) -> Unit,
     onAirportClick: (String) -> Unit,
+    onStarClick: (Route) -> Unit
 ) {
 
     val resultLauncher = rememberLauncherForActivityResult(
@@ -125,11 +127,12 @@ fun FlightHomeScreen(
             RoutesColumn(
                 airport = uiState.selectedAirport,
                 listRoutes = if (uiState.inputText.isEmpty()) {
-                    uiState.listRoutes                               // TODO listFavoriteRoutes
+                    uiState.listFavoriteRoutes
                 } else {
                     uiState.listRoutes
                 },
                 isFavorite = uiState.inputText.isEmpty(),
+                onStarClick = onStarClick,
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -146,7 +149,8 @@ fun FlightHomeScreenPreview() {
         FlightHomeScreen(
             uiState = FlightUiState("text", mockAirport, emptyList()),
             onTextChange = {},
-            onAirportClick = {}
+            onAirportClick = {},
+            onStarClick = {}
         )
     }
 }

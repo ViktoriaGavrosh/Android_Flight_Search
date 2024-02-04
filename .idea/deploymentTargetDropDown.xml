@@ -11,6 +11,9 @@
       <entry key="daoGetAllRoutes_returnListRoutesFromDb()">
         <State />
       </entry>
+      <entry key="daoInsertRoute_InsertSuccess()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

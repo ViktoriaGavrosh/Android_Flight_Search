@@ -47,6 +47,7 @@ class FlightViewModel(
         updateInputText(text)
         if (text.isEmpty()) {
             updateFalseSearchState()
+            updateListFavoriteRoutes()
         } else {
             updateListAirports(text)
         }
@@ -77,6 +78,38 @@ class FlightViewModel(
                 )
             }
             updateInputText(newAirport.code)
+        }
+    }
+
+    private fun updateListFavoriteRoutes() {
+        viewModelScope.launch {
+            val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
+            _uiState.update {
+                it.copy(
+                    listFavoriteRoutes = listFavoriteRoutes
+                )
+            }
+        }
+    }
+
+    fun updateRoute(route: Route) {
+        route.changeIsFavorite()
+        if (route.isFavorite) {
+            addFavoriteRoute(route)
+        } else {
+            deleteFavoriteRoute(route)
+        }
+    }
+
+    private fun deleteFavoriteRoute(route: Route) {
+        viewModelScope.launch {
+            flightRepository.deleteFavoriteRoute(route)
+        }
+    }
+
+    private fun addFavoriteRoute(route: Route) {
+        viewModelScope.launch {
+            flightRepository.insertFavoriteRoute(route)
         }
     }
 
@@ -124,6 +157,7 @@ data class FlightUiState(
     val selectedAirport: Airport = Airport(1, "", "", 1),
     val listAirports: List<Airport> = emptyList(),
     val listRoutes: List<Route> = emptyList(),
+    val listFavoriteRoutes: List<Route> = emptyList(),
     val isSearch: Boolean = false
 )
 

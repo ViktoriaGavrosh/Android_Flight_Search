@@ -23,7 +23,8 @@ fun RoutesColumn(
     modifier: Modifier = Modifier,
     airport: Airport,
     listRoutes: List<Route>,
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    onStarClick: (Route) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -45,6 +46,7 @@ fun RoutesColumn(
             ) { item ->
                 RouteCard(
                     route = item,
+                    onStarClick = onStarClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = dimensionResource(id = R.dimen.padding_small))
@@ -65,7 +67,8 @@ fun RouteColumnPreview() {
             listRoutes = List(3) {
                 mockRoute
             },
-            isFavorite = false
+            isFavorite = false,
+            onStarClick = {}
         )
     }
 }
