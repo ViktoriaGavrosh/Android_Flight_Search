@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.flightsearch.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,10 +34,6 @@ fun RouteCard(
     route: Route,
     onStarClick: (Route) -> Unit
 ) {
-    var starState by remember{
-        mutableStateOf(route.isFavorite)
-    }
-
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.small
@@ -62,24 +59,12 @@ fun RouteCard(
                         .padding(top = dimensionResource(id = R.dimen.padding_medium))
                 )
             }
-            Box(
+            RouteStatusIndicator(
                 modifier = Modifier
                     .weight(1F),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = if (starState) {
-                        painterResource(id = R.drawable.ic_dark_star)
-                    } else {
-                        painterResource(id = R.drawable.ic_white_star)
-                    },
-                    contentDescription = stringResource(R.string.favorite_route),
-                    modifier = Modifier.clickable {
-                        onStarClick(route)
-                        starState = !starState
-                    }
-                )
-            }
+                route = route,
+                onStarClick = onStarClick
+            )
         }
 
     }
@@ -101,6 +86,30 @@ private fun RouteDestination(
         AirportRow(
             airport = airport,
             modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small))
+        )
+    }
+}
+
+@Composable
+private fun RouteStatusIndicator(
+    modifier: Modifier = Modifier,
+    route: Route,
+    onStarClick: (Route) -> Unit
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = if (route.isFavorite) {
+                painterResource(id = R.drawable.ic_dark_star)
+            } else {
+                painterResource(id = R.drawable.ic_white_star)
+            },
+            contentDescription = stringResource(R.string.favorite_route),
+            modifier = Modifier.clickable {
+                onStarClick(route)
+            }
         )
     }
 }

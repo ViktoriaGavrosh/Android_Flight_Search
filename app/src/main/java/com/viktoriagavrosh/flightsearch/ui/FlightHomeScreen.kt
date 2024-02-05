@@ -124,6 +124,7 @@ fun FlightHomeScreen(
                 onAirportClick = onAirportClick
             )
         } else {
+
             RoutesColumn(
                 airport = uiState.selectedAirport,
                 listRoutes = if (uiState.inputText.isEmpty()) {

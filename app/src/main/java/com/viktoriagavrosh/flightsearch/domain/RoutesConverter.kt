@@ -35,7 +35,8 @@ object RoutesConverter : Converter {
             Airport(
                 name = it.arrivalName,
                 code = it.arrivalCode
-            )
+            ),
+            isFavorite = true
         )
     }
 

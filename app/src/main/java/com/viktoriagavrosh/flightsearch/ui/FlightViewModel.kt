@@ -43,13 +43,26 @@ class FlightViewModel(
     }*/
 
     fun updateInputTextForSearch(text: String) {
-
-        updateInputText(text)
-        if (text.isEmpty()) {
-            updateFalseSearchState()
-            updateListFavoriteRoutes()
-        } else {
-            updateListAirports(text)
+        viewModelScope.launch {
+            if (text.isEmpty()) {
+                val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
+                _uiState.update {
+                    it.copy(
+                        inputText = text,
+                        listFavoriteRoutes = listFavoriteRoutes,
+                        isSearch = false
+                    )
+                }
+            } else {
+                val listAirports = flightRepository.getAirportsStreamByCondition(text)
+                _uiState.update {
+                    it.copy(
+                        inputText = text,
+                        listAirports = listAirports.first(),
+                        isSearch = true
+                    )
+                }
+            }
         }
     }
 
@@ -72,13 +85,23 @@ class FlightViewModel(
             val listRoutes = flightRepository.getListRoutes(newAirport)
             _uiState.update {
                 it.copy(
+                    inputText = newAirport.code,
                     selectedAirport = newAirport,
                     listRoutes = listRoutes,
                     isSearch = false
                 )
             }
-            updateInputText(newAirport.code)
         }
+    }
+
+    fun updateRoute(route: Route) {
+        route.changeIsFavorite()
+        if (route.isFavorite) {
+            addFavoriteRoute(route)
+        } else {
+            deleteFavoriteRoute(route)
+        }
+        updateListFavoriteRoutes()
     }
 
     private fun updateListFavoriteRoutes() {
@@ -92,14 +115,6 @@ class FlightViewModel(
         }
     }
 
-    fun updateRoute(route: Route) {
-        route.changeIsFavorite()
-        if (route.isFavorite) {
-            addFavoriteRoute(route)
-        } else {
-            deleteFavoriteRoute(route)
-        }
-    }
 
     private fun deleteFavoriteRoute(route: Route) {
         viewModelScope.launch {
@@ -110,34 +125,6 @@ class FlightViewModel(
     private fun addFavoriteRoute(route: Route) {
         viewModelScope.launch {
             flightRepository.insertFavoriteRoute(route)
-        }
-    }
-
-    private fun updateFalseSearchState() {
-        _uiState.update {
-            it.copy(
-                isSearch = false
-            )
-        }
-    }
-
-    private fun updateInputText(text: String) {
-        _uiState.update {
-            it.copy(
-                inputText = text
-            )
-        }
-    }
-
-    private fun updateListAirports(text: String) {
-        viewModelScope.launch {
-            val listAirports = flightRepository.getAirportsStreamByCondition(text)
-            _uiState.update {
-                it.copy(
-                    listAirports = listAirports.first(),
-                    isSearch = true
-                )
-            }
         }
     }
 
