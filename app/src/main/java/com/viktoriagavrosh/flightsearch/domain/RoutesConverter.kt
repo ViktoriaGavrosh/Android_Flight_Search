@@ -8,20 +8,32 @@ import com.viktoriagavrosh.flightsearch.model.database.FullRoute
 interface Converter {
     fun convertAirportsToListRoutes(
         departureAirport: Airport,
-        airports: List<Airport>
+        airports: List<Airport>,
+        listFavoriteRoutes: List<Route>
     ): List<Route>
 
     fun convertListFullRoutesToListRoutes(
         favoriteRoutes: List<FullRoute>
     ): List<Route>
 }
+
 object RoutesConverter : Converter {
     override fun convertAirportsToListRoutes(
         departureAirport: Airport,
-        airports: List<Airport>
+        airports: List<Airport>,
+        listFavoriteRoutes: List<Route>
     ): List<Route> {
         val newListAirports = deleteAirport(departureAirport, airports)
-        return newListAirports.map { Route(departureAirport, it) }
+        val listRoutes = newListAirports.map {
+            val route = Route(departureAirport, it)
+            val list = listFavoriteRoutes.filter { favoriteRoute ->
+                favoriteRoute.departureAirport.code == route.departureAirport.code
+                        && favoriteRoute.arrivalAirport.code == route.arrivalAirport.code
+            }
+            route.isFavorite = list.isNotEmpty()
+            route
+        }
+        return listRoutes
     }
 
     override fun convertListFullRoutesToListRoutes(

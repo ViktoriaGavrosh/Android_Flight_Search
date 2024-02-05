@@ -8,6 +8,7 @@ data class Route(
     val arrivalAirport: Airport,
     var isFavorite: Boolean = false
 ) {
+
     fun toFavoriteRoute(): FavoriteRoute = FavoriteRoute(
         departureCode = departureAirport.code,
         arrivalCode = arrivalAirport.code

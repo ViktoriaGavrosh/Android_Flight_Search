@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.flightsearch.data
 
+import com.viktoriagavrosh.flightsearch.domain.Converter
 import com.viktoriagavrosh.flightsearch.domain.RoutesConverter
 import com.viktoriagavrosh.flightsearch.model.database.Airport
 import com.viktoriagavrosh.flightsearch.model.Route
@@ -11,8 +12,6 @@ interface FlightRepository {
 
     suspend fun getListRoutes(airport: Airport): List<Route>
 
-   // fun getFavoriteRoutesStream(): Flow<List<FavoriteRoute>>     TODO
-
     suspend fun insertFavoriteRoute(route: Route)
 
     suspend fun deleteFavoriteRoute(route: Route)
@@ -23,6 +22,9 @@ interface FlightRepository {
 }
 
 class DbFlightRepository(private val flightDao: FlightDao) : FlightRepository {
+
+    private val converter: Converter = RoutesConverter
+
     override fun getAirportsStreamByCondition(code: String) = flightDao.getAirportsByCondition(code)
     override suspend fun isContainFavoriteRoute(route: Route): Boolean {
         val listRoutes = flightDao
@@ -32,15 +34,13 @@ class DbFlightRepository(private val flightDao: FlightDao) : FlightRepository {
 
     override suspend fun getListRoutes(airport: Airport): List<Route> {
         val allAirports = flightDao.getAllAirports().first()
-        return RoutesConverter.convertAirportsToListRoutes(airport, allAirports)
+        return converter.convertAirportsToListRoutes(airport, allAirports, getFavoriteRoutes())
     }
 
     override suspend fun getFavoriteRoutes(): List<Route> {
         val listFavoriteRoutes = flightDao.getAllFavoriteRoutes().first()
-        return RoutesConverter.convertListFullRoutesToListRoutes(listFavoriteRoutes)
+        return converter.convertListFullRoutesToListRoutes(listFavoriteRoutes)
     }
-
-    //override fun getFavoriteRoutesStream() = flightDao.getAllRoutes()      TODO
 
     override suspend fun insertFavoriteRoute(route: Route) {
         flightDao.insertRoute(route.toFavoriteRoute())
