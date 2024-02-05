@@ -1,7 +1,6 @@
 package com.viktoriagavrosh.flightsearch.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.viktoriagavrosh.flightsearch.model.database.Airport
@@ -40,4 +39,7 @@ interface FlightDao {
             "a.iata_code INNER JOIN airport b ON f.destination_code = b.iata_code")
     fun getAllFavoriteRoutes(): Flow<List<FullRoute>>
 
+    @Query("SELECT * FROM favorite WHERE departure_code = :departureCode AND " +
+            "destination_code = :destinationCode")
+    fun getRoute(departureCode: String, destinationCode: String): Flow<List<FavoriteRoute>>
 }

@@ -95,36 +95,25 @@ class FlightViewModel(
     }
 
     fun updateRoute(route: Route) {
-        route.changeIsFavorite()
-        if (route.isFavorite) {
-            addFavoriteRoute(route)
-        } else {
-            deleteFavoriteRoute(route)
-        }
-        updateListFavoriteRoutes()
-    }
-
-    private fun updateListFavoriteRoutes() {
         viewModelScope.launch {
-            val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
-            _uiState.update {
-                it.copy(
-                    listFavoriteRoutes = listFavoriteRoutes
-                )
+            route.changeIsFavorite()
+            if (route.isFavorite) {
+                if (!flightRepository.isContainFavoriteRoute(route)) {
+                    flightRepository.insertFavoriteRoute(route)
+                }
+            } else {
+                flightRepository.deleteFavoriteRoute(route)
             }
+            updateListFavoriteRoutes()
         }
     }
 
-
-    private fun deleteFavoriteRoute(route: Route) {
-        viewModelScope.launch {
-            flightRepository.deleteFavoriteRoute(route)
-        }
-    }
-
-    private fun addFavoriteRoute(route: Route) {
-        viewModelScope.launch {
-            flightRepository.insertFavoriteRoute(route)
+    private suspend fun updateListFavoriteRoutes() {
+        val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
+        _uiState.update {
+            it.copy(
+                listFavoriteRoutes = listFavoriteRoutes
+            )
         }
     }
 

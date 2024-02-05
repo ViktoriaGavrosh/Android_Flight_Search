@@ -18,10 +18,17 @@ interface FlightRepository {
     suspend fun deleteFavoriteRoute(route: Route)
 
     suspend fun getFavoriteRoutes(): List<Route>
+
+    suspend fun isContainFavoriteRoute(route: Route): Boolean
 }
 
 class DbFlightRepository(private val flightDao: FlightDao) : FlightRepository {
     override fun getAirportsStreamByCondition(code: String) = flightDao.getAirportsByCondition(code)
+    override suspend fun isContainFavoriteRoute(route: Route): Boolean {
+        val listRoutes = flightDao
+            .getRoute(route.departureAirport.code, route.arrivalAirport.code).first()
+        return listRoutes.isNotEmpty()
+    }
 
     override suspend fun getListRoutes(airport: Airport): List<Route> {
         val allAirports = flightDao.getAllAirports().first()
