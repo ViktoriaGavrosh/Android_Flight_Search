@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.flightsearch.ui
+package com.viktoriagavrosh.flightsearch.ui.airports
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

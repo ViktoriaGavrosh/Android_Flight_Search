@@ -52,7 +52,6 @@ object RoutesConverter : Converter {
         )
     }
 
-
     private fun deleteAirport(airport: Airport, airports: List<Airport>) = airports.filter {
         it != airport
     }

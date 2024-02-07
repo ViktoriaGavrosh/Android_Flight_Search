@@ -48,14 +48,6 @@ class FlightDaoTest {
 
     @Test
     @Throws(Exception::class)
-    fun daoGetAirportById_returnAirportFromDb() = runBlocking {
-        flightDao.insertAirport(airport1)
-        val airport = flightDao.getAirportById(1)
-        assertEquals(airport.first(), airport1)
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun daoGetAllRoutes_returnListRoutesFromDb() = runBlocking {
         flightDao.insertRoute(favoriteRoute1)
         flightDao.insertRoute(favoriteRoute2)

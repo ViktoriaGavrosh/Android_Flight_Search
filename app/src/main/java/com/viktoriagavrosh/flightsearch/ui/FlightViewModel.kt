@@ -44,7 +44,7 @@ class FlightViewModel(
             if (text.isEmpty()) {
                 updateListFavoriteRoutes(text)
             } else {
-               updateListAirports(text)
+                updateListAirports(text)
             }
         }
     }
@@ -122,7 +122,6 @@ class FlightViewModel(
             }
         }
     }
-
 }
 
 data class FlightUiState(

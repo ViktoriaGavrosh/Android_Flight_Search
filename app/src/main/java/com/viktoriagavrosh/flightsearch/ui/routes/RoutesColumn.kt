@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.flightsearch.ui
+package com.viktoriagavrosh.flightsearch.ui.routes
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

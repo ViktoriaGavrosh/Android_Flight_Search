@@ -26,6 +26,7 @@ class DbFlightRepository(private val flightDao: FlightDao) : FlightRepository {
     private val converter: Converter = RoutesConverter
 
     override fun getAirportsStreamByCondition(code: String) = flightDao.getAirportsByCondition(code)
+
     override suspend fun isContainFavoriteRoute(route: Route): Boolean {
         val listRoutes = flightDao
             .getRoute(route.departureAirport.code, route.arrivalAirport.code).first()
@@ -49,6 +50,4 @@ class DbFlightRepository(private val flightDao: FlightDao) : FlightRepository {
     override suspend fun deleteFavoriteRoute(route: Route) {
         flightDao.deleteRoute(route.departureAirport.code, route.arrivalAirport.code)
     }
-
-
 }

@@ -30,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
 import com.viktoriagavrosh.flightsearch.model.Route
 import com.viktoriagavrosh.flightsearch.model.database.Airport
+import com.viktoriagavrosh.flightsearch.ui.airports.AirportsColumn
+import com.viktoriagavrosh.flightsearch.ui.routes.RoutesColumn
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 import java.util.Locale
 
@@ -139,7 +141,6 @@ fun FlightHomeScreen(
             )
         }
     }
-
 }
 
 @Preview

@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.flightsearch.ui
+package com.viktoriagavrosh.flightsearch.ui.routes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.flightsearch.R
 import com.viktoriagavrosh.flightsearch.model.Route
 import com.viktoriagavrosh.flightsearch.model.database.Airport
+import com.viktoriagavrosh.flightsearch.ui.airports.AirportRow
 import com.viktoriagavrosh.flightsearch.ui.theme.FlightSearchTheme
 
 @Composable
