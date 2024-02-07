@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.flightsearch.FlightSearchApplication
 import com.viktoriagavrosh.flightsearch.data.FlightRepository
+import com.viktoriagavrosh.flightsearch.data.UserPreferencesRepository
 import com.viktoriagavrosh.flightsearch.model.Route
 import com.viktoriagavrosh.flightsearch.model.database.Airport
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,61 +20,31 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FlightViewModel(
-    private val flightRepository: FlightRepository
+    private val flightRepository: FlightRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow(FlightUiState())
     val uiState: StateFlow<FlightUiState> = _uiState.asStateFlow()
 
-    /*init {
-        initState(1)
+    init {
+        initState()
     }
 
-    private fun initState(id: Int) {
+    private fun initState() {
         viewModelScope.launch {
-           val airport = flightDao
-                .getAirportById(id)
-                .first()
-            _uiState.update {
-                it.copy(
-                    airport = airport
-                )
-            }
+            val inputText = userPreferencesRepository.searchText.first()
+            updateInputTextForSearch(inputText)
         }
-    }*/
+    }
 
     fun updateInputTextForSearch(text: String) {
         viewModelScope.launch {
+            userPreferencesRepository.saveSearchTextPreferences(text)
             if (text.isEmpty()) {
-                val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
-                _uiState.update {
-                    it.copy(
-                        inputText = text,
-                        listFavoriteRoutes = listFavoriteRoutes,
-                        isSearch = false
-                    )
-                }
+                updateListFavoriteRoutes(text)
             } else {
-                val listAirports = flightRepository.getAirportsStreamByCondition(text)
-                _uiState.update {
-                    it.copy(
-                        inputText = text,
-                        listAirports = listAirports.first(),
-                        isSearch = true
-                    )
-                }
-            }
-        }
-    }
-
-    fun updateAirport(code: String) {
-        viewModelScope.launch {
-            val newAirport = flightRepository.getAirportsStreamByCondition(code).first()
-            _uiState.update {
-                it.copy(
-                    selectedAirport = newAirport.first(),
-                    isSearch = false
-                )
+               updateListAirports(text)
             }
         }
     }
@@ -83,6 +54,7 @@ class FlightViewModel(
             val newAirport = flightRepository.getAirportsStreamByCondition(code).first()
                 .first()
             val listRoutes = flightRepository.getListRoutes(newAirport)
+            userPreferencesRepository.saveSearchTextPreferences(newAirport.code)
             _uiState.update {
                 it.copy(
                     inputText = newAirport.code,
@@ -104,11 +76,33 @@ class FlightViewModel(
             } else {
                 flightRepository.deleteFavoriteRoute(route)
             }
-            updateListFavoriteRoutes()
+            updateOnlyListFavoriteRoutes()
         }
     }
 
-    private suspend fun updateListFavoriteRoutes() {
+    private suspend fun updateListFavoriteRoutes(searchText: String) {
+        val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
+        _uiState.update {
+            it.copy(
+                inputText = searchText,
+                listFavoriteRoutes = listFavoriteRoutes,
+                isSearch = false
+            )
+        }
+    }
+
+    private suspend fun updateListAirports(searchText: String) {
+        val listAirports = flightRepository.getAirportsStreamByCondition(searchText)
+        _uiState.update {
+            it.copy(
+                inputText = searchText,
+                listAirports = listAirports.first(),
+                isSearch = true
+            )
+        }
+    }
+
+    private suspend fun updateOnlyListFavoriteRoutes() {
         val listFavoriteRoutes = flightRepository.getFavoriteRoutes()
         _uiState.update {
             it.copy(
@@ -121,7 +115,10 @@ class FlightViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as FlightSearchApplication)
-                FlightViewModel(application.container.flightRepository)
+                FlightViewModel(
+                    application.container.flightRepository,
+                    application.container.userPreferencesRepository
+                )
             }
         }
     }
